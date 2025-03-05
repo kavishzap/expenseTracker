@@ -40,7 +40,7 @@ const LogoutButton = () => {
   return (
     <Button
       variant="text"
-      className="flex items-center justify-center bg-[#ff0000] text-white px-4 py-2 w-full"
+      className="flex items-center justify-center bg-[#000000] text-white px-4 py-2 w-full"
       onClick={handleLogout}
     >
       <ArrowRightOnRectangleIcon className="w-5 sm:w-6 h-5 sm:h-6 mr-2" />
