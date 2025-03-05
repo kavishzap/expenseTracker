@@ -262,7 +262,7 @@ export function Tables() {
               onClick={() => openModal()}
             >
               <PlusCircleIcon className="w-5 h-5 mr-2" />
-              Add Expense/Income
+              Add Expense
             </Button>
         </div>
 
@@ -330,7 +330,6 @@ export function Tables() {
         className="w-full text-xs"
       >
         <Option value="All">All</Option>
-        <Option value="Income">Income</Option>
         <Option value="Expense">Expense</Option>
       </Select>
     </th>
@@ -396,7 +395,7 @@ export function Tables() {
      {/* Add/Edit Expense Modal */}
 <Dialog open={isModalOpen} handler={closeModal} size="sm" className="rounded-lg shadow-lg">
   <DialogHeader className="bg-gray-100 text-gray-900 font-semibold px-6 py-4 rounded-t-lg">
-    {editingItem ? "Edit Expense/Income" : "Add Expense/Income/Savings"}
+    {editingItem ? "Edit Expense" : "Add Expense"}
   </DialogHeader>
 
   <DialogBody className="px-6 py-4 space-y-4">
@@ -446,7 +445,6 @@ export function Tables() {
         onChange={(val) => setFormData({ ...formData, types: val })} 
         className="mt-1"
       >
-        <Option value="Income">Income</Option>
         <Option value="Expense">Expense</Option>
 
       </Select>
