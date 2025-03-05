@@ -3,16 +3,23 @@ import { supabase } from "../../supabase";
 import { chartsConfig } from "@/configs";
 import StatisticsChart from "../../widgets/charts/statistics-chart"; // Import StatisticsChart component
 
-const fetchExpensesData = async () => {
+const fetchExpensesData = async (userId) => {
+  if (!userId) {
+    console.error("User ID not found, returning empty expenses.");
+    return [];
+  }
+
   const { data, error } = await supabase
     .from("expenses")
-    .select("date, amount");
+    .select("date, amount")
+    .eq("user_id", userId);
 
   if (error) {
     console.error("Error fetching expenses:", error.message);
     return [];
   }
 
+  console.log("Fetched Expenses:", data); // ✅ Log response
   return data;
 };
 
@@ -39,21 +46,33 @@ const transformDataForChart = (expenses) => {
     }
   });
 
+  console.log("Transformed Expenses for Chart:", monthlyExpenses); // ✅ Log transformed data
   return Object.values(monthlyExpenses);
 };
 
-export function ExpenseChart() {
+export function ExpenseChart({onExpensesUpdated}) {
   const [chartData, setChartData] = useState(Array(12).fill(0)); // Ensure all 12 months exist
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const fetchAndTransform = async () => {
-      const expenses = await fetchExpensesData();
+    const fetchUserAndExpenses = async () => {
+      const { data: userData, error } = await supabase.auth.getUser();
+      if (error || !userData?.user) {
+        console.error("Error fetching user:", error?.message);
+        return;
+      }
+
+      console.log("Logged-in User:", userData.user); // ✅ Log user data
+      setUser(userData.user);
+
+      // ✅ Fetch and process expenses for logged-in user
+      const expenses = await fetchExpensesData(userData.user.id);
       const formattedData = transformDataForChart(expenses);
       setChartData(formattedData);
     };
 
-    fetchAndTransform();
-  }, []);
+    fetchUserAndExpenses();
+  }, [onExpensesUpdated]);
 
   const dailySalesChart = {
     type: "line",

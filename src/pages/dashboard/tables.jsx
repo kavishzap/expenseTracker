@@ -8,7 +8,7 @@ import { PencilIcon, TrashIcon, ChevronLeftIcon, ChevronRightIcon, PlusCircleIco
 import Swal from "sweetalert2";
 import { supabase } from "../../supabase";
 
-export function Tables() {
+export function Tables({ onExpensesUpdated }) {
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 5;
   const [filters, setFilters] = useState({ description: "", amount: "", types: "" });
@@ -184,6 +184,7 @@ export function Tables() {
     });
     closeModal();
     fetchExpenses(user.id); // Refresh Data
+    onExpensesUpdated();
   }
   
   };
@@ -324,14 +325,14 @@ export function Tables() {
 
     {/* Type Filter */}
     <th className="py-2 px-5">
-      <Select 
-        value={filters.types} 
-        onChange={(val) => setFilters({ ...filters, types: val })}
-        className="w-full text-xs"
-      >
-        <Option value="All">All</Option>
-        <Option value="Expense">Expense</Option>
-      </Select>
+    <Select 
+  value={formData.types}
+  onChange={(val) => setFormData((prev) => ({ ...prev, types: val }))}
+  className="mt-1"
+>
+  <Option value="All">All</Option>
+  <Option value="Expense">Expense</Option>
+</Select>
     </th>
 
     <th className="py-2 px-5"></th> {/* Empty column for action */}
@@ -441,13 +442,13 @@ export function Tables() {
     <div>
       <Typography variant="small" className="font-medium text-gray-700">Type</Typography>
       <Select 
-        value={formData.types} 
-        onChange={(val) => setFormData({ ...formData, types: val })} 
-        className="mt-1"
-      >
-        <Option value="Expense">Expense</Option>
-
-      </Select>
+  value={formData.types}
+  onChange={(val) => setFormData((prev) => ({ ...prev, types: val }))}
+  className="mt-1"
+>
+  <Option value="All">All</Option>
+  <Option value="Expense">Expense</Option>
+</Select>
     </div>
   </DialogBody>
 
